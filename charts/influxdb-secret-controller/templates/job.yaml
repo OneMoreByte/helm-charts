@@ -27,6 +27,8 @@ spec:
         env:
         - name: DEPLOYMENT_NAME
           value: "{{ .Release.Name }}"
+        - name: CONFIG_PATH
+          value: /data/config.yaml
         {{- if .Values.debug }}
         - name: DEBUG
           value: "true"
@@ -47,5 +49,19 @@ spec:
         serviceAccountName: {{ include "infuxdb_secret_controller.serviceAccountName" . }}
         volumeMounts:
         - name: config
-        
+          mountPath: /data
         command: []
+      volumes:
+        name: config
+        configMap:
+          name: "{{ .Release.Name }}-config"
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}

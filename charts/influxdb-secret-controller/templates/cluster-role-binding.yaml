@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: "{{ .Release.Name }}-secret-manager"
+subjects:
+- kind: ServiceAccount
+  name: {{ include "infuxdb_secret_controller.serviceAccountName" . }}
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: "{{ .Release.Name }}-secret-manager"
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "1"
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: post-install-job
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: DEPLOYMENT_NAME
+          value: "{{ .Release.Name }}"
+        {{- if .Values.debug }}
+        - name: DEBUG
+          value: "true"
+        {{- end }}
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+            value: {{ $value | quote }}
+        {{- end }}
+        envFrom:
+        {{- range .Values.envFromSecrets }}
+        - secretRef:
+            name: {{ . }}
+        {{- end }}
+        resources:
+        {{- toYaml .Values.resources | nindent 12 }}
+        securityContext:
+        {{- toYaml .Values.securityContext | nindent 12 }}
+        serviceAccountName: {{ include "infuxdb_secret_controller.serviceAccountName" . }}
+        volumeMounts:
+        - name: config
+        
+        command: []

@@ -21,7 +21,7 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: post-install-job
+      - name: "{{ .Release.Name }}-post-install-create-token-secrets"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:

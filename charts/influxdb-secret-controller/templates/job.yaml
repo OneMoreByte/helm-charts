@@ -1,3 +1,4 @@
+
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -33,20 +34,24 @@ spec:
         - name: DEBUG
           value: "true"
         {{- end }}
-        {{- range .Values.env }}
-        - name: {{ .name }}
-        {{- if .value }}
-            value: {{ $value | quote }}
+        {{- if .Values.env}}
+        {{- range $env := .Values.env }}
+        - name: {{ $env.name }}
+        {{- if $env.value }}
+          value: {{ $env.value | quote }}
         {{- end }}
-        {{- if .valueFrom }}
-            valueFrom: 
-            {{- toYaml .valueFrom | nindent 6 }}
+        {{- if $env.valueFrom }}
+          valueFrom: 
+            {{- toYaml $env.valueFrom | nindent 12 }}
         {{- end }}
         {{- end }}
+        {{- end }}
+        {{- if .Values.envFromSecrets }}
         envFrom:
-        {{- range .Values.envFromSecrets }}
-        - secretRef:
-            name: {{ . }}
+            {{- range .Values.envFromSecrets }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
         {{- end }}
         resources:
         {{- toYaml .Values.resources | nindent 12 }}
@@ -61,6 +66,7 @@ spec:
         name: config
         configMap:
           name: "{{ .Release.Name }}-config"
+      {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -71,3 +77,4 @@ spec:
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+      {{- end }}

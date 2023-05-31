@@ -3,6 +3,16 @@ entries:
   infuxdb-secret-controller:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2023-05-31T14:14:34.49540023Z"
+    description: Create secrets for influxdb access
+    digest: c383e6a488590533e2710fd990b51b76303feb30740eae0b341d9f00e0701776
+    name: infuxdb-secret-controller
+    type: application
+    urls:
+    - https://github.com/OneMoreByte/helm-charts/releases/download/infuxdb-secret-controller-1.0.5/infuxdb-secret-controller-1.0.5.tgz
+    version: 1.0.5
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2023-05-30T22:44:59.340318545Z"
     description: Create secrets for influxdb access
     digest: 8939d2b8e9e3950f34f626fed06a1e332647512499089e28beabe2069c903ebc
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/OneMoreByte/helm-charts/releases/download/infuxdb-secret-controller-1.0.3/infuxdb-secret-controller-1.0.3.tgz
     version: 1.0.3
-generated: "2023-05-30T22:44:59.340324945Z"
+generated: "2023-05-31T14:14:34.49541293Z"

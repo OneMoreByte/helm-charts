@@ -11,6 +11,10 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
+job:
+  hook: "post-install,post-upgrade"
+  weight: "-1"
+
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}

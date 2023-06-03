@@ -4,6 +4,6 @@ description: Create secrets for influxdb access
 
 type: application
 
-version: 1.0.9
+version: 1.0.10
 
 appVersion: "0.1.0"

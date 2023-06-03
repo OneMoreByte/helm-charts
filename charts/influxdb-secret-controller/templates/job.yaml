@@ -21,6 +21,7 @@ spec:
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     spec:
       restartPolicy: Never
+      serviceAccountName: {{ include "infuxdb_secret_controller.serviceAccountName" . }}
       containers:
       - name: "{{ .Release.Name }}-post-install-create-token-secrets"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -57,7 +58,6 @@ spec:
         {{- toYaml .Values.resources | nindent 12 }}
         securityContext:
         {{- toYaml .Values.securityContext | nindent 12 }}
-        serviceAccountName: {{ include "infuxdb_secret_controller.serviceAccountName" . }}
         volumeMounts:
         - name: config
           mountPath: /data

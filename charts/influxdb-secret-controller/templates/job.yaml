@@ -63,7 +63,7 @@ spec:
           mountPath: /data
         command: []
       volumes:
-        name: config
+      - name: config
         configMap:
           name: "{{ .Release.Name }}-config"
       {{- with .Values.nodeSelector }}

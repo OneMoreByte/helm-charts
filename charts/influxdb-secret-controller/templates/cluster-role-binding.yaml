@@ -6,8 +6,7 @@ subjects:
 - kind: ServiceAccount
   name: {{ include "infuxdb_secret_controller.serviceAccountName" . }}
   namespace: "{{.Release.Namespace}}"
-  apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
   name: "{{ .Release.Name }}-secret-manager"
-  apiGroup: rbac.authorization.k8s.io
+  apiGroup: "rbac.authorization.k8s.io"
